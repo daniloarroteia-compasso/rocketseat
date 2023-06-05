@@ -11,10 +11,6 @@ export function App() {
     setTheme(theme === defaultTheme ? lightTheme : defaultTheme);
   };
 
-  // write a function to change theme
-  // pass the function to the button
-  // call the function when the button is clicked
-
   return (
     <ThemeProvider theme={theme}>
       <button onClick={toggleTheme}>Change theme</button>
