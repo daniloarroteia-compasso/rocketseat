@@ -1,8 +1,10 @@
 import { ThemeProvider } from "styled-components";
 import { useState } from "react";
-import { Button } from "./components/Button";
+import { BrowserRouter } from "react-router-dom";
+
 import { GlobalStyle } from "./styles/global";
 import { lightTheme, darkTheme } from "./styles/themes/theme";
+import { Router } from "./components/Router";
 
 export function App() {
   const [theme, setTheme] = useState(lightTheme);
@@ -13,14 +15,12 @@ export function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <button onClick={toggleTheme}>Change theme</button>
-      <Button variant="primary" />
-      <Button variant="secondary" />
-      <Button variant="success" />
-      <Button variant="danger" />
-
-      <GlobalStyle />
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <button onClick={toggleTheme}>Change theme</button>
+        <Router />
+        <GlobalStyle />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
