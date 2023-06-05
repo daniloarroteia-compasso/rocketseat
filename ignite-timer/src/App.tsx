@@ -1,7 +1,6 @@
 import { ThemeProvider } from "styled-components";
-import { Button } from "./components/Button";
 import { useState } from "react";
-
+import { Button } from "./components/Button";
 import { GlobalStyle } from "./styles/global";
 import { lightTheme, darkTheme } from "./styles/themes/theme";
 
