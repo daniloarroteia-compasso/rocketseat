@@ -1,10 +1,9 @@
-import React from "react";
-import { ButtonContainer } from "./styles";
+import { ButtonContainer, ButtonVariant } from "./styles";
 
 interface ButtonProps {
-  color?: "primary" | "secondary" | "success" | "danger";
+  variant?: ButtonVariant;
 }
 
-export function Button(props: ButtonProps) {
-  return <ButtonContainer>Click me</ButtonContainer>;
+export function Button({ variant = "primary" }: ButtonProps) {
+  return <ButtonContainer variant={variant}>Click me</ButtonContainer>;
 }
