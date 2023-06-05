@@ -1,8 +1,10 @@
 import { ThemeProvider } from "styled-components";
 import { Button } from "./components/Button";
-import { defaultTheme } from "./styles/themes/default";
 import { useState } from "react";
+
+import { defaultTheme } from "./styles/themes/default";
 import { lightTheme } from "./styles/themes/lightTheme";
+import { GlobalStyle } from "./styles/global";
 
 export function App() {
   const [theme, setTheme] = useState(defaultTheme);
@@ -18,6 +20,8 @@ export function App() {
       <Button variant="secondary" />
       <Button variant="success" />
       <Button variant="danger" />
+
+      <GlobalStyle />
     </ThemeProvider>
   );
 }
