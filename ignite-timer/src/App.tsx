@@ -2,15 +2,15 @@ import { ThemeProvider } from "styled-components";
 import { Button } from "./components/Button";
 import { useState } from "react";
 
-import { defaultTheme } from "./styles/themes/default";
-import { lightTheme } from "./styles/themes/lightTheme";
 import { GlobalStyle } from "./styles/global";
+import { lightTheme, darkTheme } from "./styles/themes/theme";
 
 export function App() {
-  const [theme, setTheme] = useState(defaultTheme);
+  const [theme, setTheme] = useState(lightTheme);
 
   const toggleTheme = () => {
-    setTheme(theme === defaultTheme ? lightTheme : defaultTheme);
+    const newTheme = theme === lightTheme ? darkTheme : lightTheme;
+    setTheme(newTheme);
   };
 
   return (
