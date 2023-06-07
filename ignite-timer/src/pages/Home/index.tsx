@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
+import { differenceInSeconds } from "date-fns";
 
 import { Play } from "phosphor-react";
 import {
@@ -12,7 +14,6 @@ import {
   StartCountdownButton,
   TaskInput,
 } from "./styles";
-import { useState } from "react";
 
 //
 const newCycleFormValidationSchema = zod.object({
@@ -30,6 +31,7 @@ interface Cycle {
   id: string;
   task: string;
   minutesAmount: number;
+  startDate: Date;
 }
 
 export function Home() {
@@ -52,6 +54,7 @@ export function Home() {
       id,
       task: data.task,
       minutesAmount: data.minutesAmount,
+      startDate: new Date(),
     };
 
     setCycles((oldCycles) => [...oldCycles, newCycle]);
@@ -62,7 +65,9 @@ export function Home() {
   // Encontra o ciclo ativo
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
+  // Calcula o tempo restante do ciclo ativo
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
+
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0;
 
   const minutesAmount = Math.floor(currentSeconds / 60);
@@ -74,6 +79,17 @@ export function Home() {
   const task = watch("task");
   // Define se o botão de submit está habilitado ou não baseado no valor de task (se está preenchido ou não)
   const isSubmitDisabled = !task;
+
+  useEffect(() => {
+    if (activeCycle) {
+      setInterval(() => {
+        setAmountSecondsPassed(
+          differenceInSeconds(new Date(), activeCycle.startDate)
+        );
+      }, 1000);
+    }
+    console.log(activeCycle);
+  }, [activeCycle]);
 
   return (
     <HomeContainer>
