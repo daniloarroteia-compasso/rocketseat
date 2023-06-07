@@ -1,5 +1,7 @@
-import { FormEvent, useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as zod from "zod";
+
 import { Play } from "phosphor-react";
 import {
   CountdownContainer,
@@ -11,16 +13,32 @@ import {
   TaskInput,
 } from "./styles";
 
-export function Home() {
-  const { register, handleSubmit, watch } = useForm();
+const newCycleFormValidationSchema = zod.object({
+  task: zod
+    .string()
+    .min(1, { message: "Informe a tarefa" })
+    .nonempty({ message: "Campo obrigatório" }),
+  minutesAmount: zod.number().min(5).max(60),
+});
 
-  function handleCreateNewCycle(data: any) {
+// tipagem do zod para o react-hook-form (inferir o tipo de um objeto)
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
+
+export function Home() {
+  const { register, handleSubmit, watch } = useForm<NewCycleFormData>({
+    resolver: zodResolver(newCycleFormValidationSchema),
+    defaultValues: {
+      task: "",
+      minutesAmount: 0,
+    },
+  });
+
+  function handleCreateNewCycle(data: NewCycleFormData) {
     console.log(data);
   }
-  // Verificar se task está preenchido
+  // Verificar se task está preenchido ou não (watch é uma função do react-hook-form)
   const task = watch("task");
-  // Define se o botão de submit está habilitado ou não
-
+  // Define se o botão de submit está habilitado ou não baseado no valor de task (se está preenchido ou não)
   const isSubmitDisabled = !task;
 
   return (
