@@ -12,7 +12,9 @@ import {
   StartCountdownButton,
   TaskInput,
 } from "./styles";
+import { useState } from "react";
 
+//
 const newCycleFormValidationSchema = zod.object({
   task: zod
     .string()
@@ -24,7 +26,17 @@ const newCycleFormValidationSchema = zod.object({
 // tipagem do zod para o react-hook-form (inferir o tipo de um objeto)
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
 
+interface Cycle {
+  id: string;
+  task: string;
+  minutesAmount: number;
+}
+
 export function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([]);
+
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
+
   const { reset, register, handleSubmit, watch } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
@@ -32,11 +44,24 @@ export function Home() {
       minutesAmount: 0,
     },
   });
-
+  // Função que é chamada quando o formulário é submetido
   function handleCreateNewCycle(data: NewCycleFormData) {
-    console.log(data);
+    const id = String(new Date().getTime());
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+    };
+
+    setCycles((oldCycles) => [...oldCycles, newCycle]);
+    setActiveCycleId(id);
     reset();
   }
+
+  // Encontra o ciclo ativo
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  console.log({ activeCycle });
   // Verificar se task está preenchido ou não (watch é uma função do react-hook-form)
   const task = watch("task");
   // Define se o botão de submit está habilitado ou não baseado no valor de task (se está preenchido ou não)
