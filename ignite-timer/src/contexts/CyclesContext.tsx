@@ -23,6 +23,7 @@ interface CycleContextType {
   activeCycle: Cycle | undefined;
   activeCycleId: string | null;
   amountSecondsPassed: number;
+  cycles: Cycle[];
 }
 
 type CycleContextProviderProps = {
@@ -98,6 +99,7 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
         setSecondsPassed,
         createNewCycle,
         interruptCurrentCycle,
+        cycles,
       }}
     >
       {children}
