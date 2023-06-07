@@ -36,16 +36,21 @@ export function Home() {
       minutesAmount: 0,
     },
   });
-  const { watch, handleSubmit } = newCycleForm;
+  const { watch, handleSubmit, reset } = newCycleForm;
 
   // Verificar se task está preenchido ou não (watch é uma função do react-hook-form)
   const task = watch("task");
   // Define se o botão de submit está habilitado ou não baseado no valor de task (se está preenchido ou não)
   const isSubmitDisabled = !task;
 
+  function handleCreateNewCycle(data: NewCycleFormData) {
+    createNewCycle(data);
+    reset();
+  }
+
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(createNewCycle)}>
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormProvider {...newCycleForm}>
           <NewCycleForm />
         </FormProvider>
