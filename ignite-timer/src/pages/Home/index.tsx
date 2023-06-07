@@ -47,6 +47,7 @@ export function Home() {
       minutesAmount: 0,
     },
   });
+
   // Função que é chamada quando o formulário é submetido
   function handleCreateNewCycle(data: NewCycleFormData) {
     const id = String(new Date().getTime());
@@ -59,6 +60,7 @@ export function Home() {
 
     setCycles((oldCycles) => [...oldCycles, newCycle]);
     setActiveCycleId(id);
+    setAmountSecondsPassed(0);
     reset();
   }
 
@@ -81,15 +83,23 @@ export function Home() {
   const isSubmitDisabled = !task;
 
   useEffect(() => {
+    let interval: number;
+
     if (activeCycle) {
-      setInterval(() => {
+      interval = setInterval(() => {
         setAmountSecondsPassed(
           differenceInSeconds(new Date(), activeCycle.startDate)
         );
       }, 1000);
     }
-    console.log(activeCycle);
+    return () => clearInterval(interval);
   }, [activeCycle]);
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}:${seconds} - ${activeCycle.task}`;
+    }
+  }, [minutes, seconds]);
 
   return (
     <HomeContainer>
